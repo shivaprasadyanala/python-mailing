@@ -21,7 +21,7 @@ db=mysql.connector.connect(user="root",passwd="root",host="localhost",port=3000,
  
 my_cursor=db.cursor() #getting the cursor object
 #this query will return a email whose isadmin is true
-my_cursor.execute("select email from users where isadmin='true'") #creating the database named students
+my_cursor.execute("select email from users where isadmin='true'")
 user = my_cursor.fetchone()
 
 
@@ -59,6 +59,12 @@ while True:
 
 msg.body = "hello this is a secret key: "+secpass
 msg.subject = "secret key"
-mail.send(msg)
+# mail.send(msg)
 print("msg sent")
 
+secpass = f'{secpass}'
+#updating the admin password
+print(secpass)
+print(user[0])
+my_cursor.execute("update users set password = %s where email = %s",(secpass,user[0]))
+db.commit()
